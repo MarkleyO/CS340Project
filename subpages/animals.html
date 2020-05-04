@@ -12,20 +12,23 @@
 <body>
   <header class="navbar">
     <section class="navbar-section">
-      <a href="../index.html" class="btn btn-link">Home</a>
+      <a href="../index.html" class="navbar-brand mr-2">Home</a>
+    </section>
+    <section class="navbar-center">
       <a href="animals.html" class="btn btn-link">Animals</a>
       <a href="zookeepers.html" class="btn btn-link">Zookeepers</a>
       <a href="feeding_schedule.html" class="btn btn-link">Feeding Schedule</a>
       <a href="diets.html" class="btn btn-link">Diets</a>
       <a href="care_instructions.html" class="btn btn-link">Care Instructions</a>
-
     </section>
+    <section class="navbar-section"></section>
   </header>
 
   <div>
     <h1>Animals</h1>
   </div>
 
+<<<<<<< HEAD
   <table class="table">
     <thead>
       <tr>
@@ -80,6 +83,73 @@
       </tr>
     </tbody>
   </table>
+=======
+  <div class="columns text-center">
+    <div class="column col-10 col-mx-auto">
+      <div class="bg-secondary text-primary docs-block">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Animal ID</th>
+              <th>Name</th>
+              <th>Species</th>
+              <th>Age</th>
+              <th>Habitat</th>
+              <th>Keeper</th>
+              <th>Feeding Time</th>
+              <th>Injury</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="active">
+              <td>001E</td>
+              <td>Elsa</td>
+              <td>Polar Bear</td>
+              <td>10</td>
+              <td>Tundra</td>
+              <td>001</td>
+              <td>001</td>
+              <td>Cut</td>
+              <td>
+                <button class="btn">Update</button>
+                <button class="btn btn-error">Remove</button>
+              </td>
+            </tr>
+            <tr class="active">
+              <td>002J</td>
+              <td>Julian</td>
+              <td>Lemur</td>
+              <td>3</td>
+              <td>Jungle</td>
+              <td>002</td>
+              <td>002</td>
+              <td>Common Cold</td>
+              <td>
+                <button class="btn">Update</button>
+                <button class="btn btn-error">Remove</button>
+              </td>
+            </tr>
+            <tr class="active">
+              <td>003S</td>
+              <td>Shira</td>
+              <td>Kangaroo</td>
+              <td>6</td>
+              <td>Outback</td>
+              <td>003</td>
+              <td>003</td>
+              <td>Sprained Ankle</td>
+              <td>
+                <button class="btn">Update</button>
+                <button class="btn btn-error">Remove</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+>>>>>>> 6515ab2fdf2bd40ca819e080dea8f824560bddfc
 
   <button class="btn btn-primary">Add Animal</button>
 
