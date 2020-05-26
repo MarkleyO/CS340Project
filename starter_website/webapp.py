@@ -10,15 +10,50 @@ webapp = Flask(__name__)
 def hello():
     return "Hello World!"
 
-@webapp.route('/browse_bsg_people')
-#the name of this function is just a cosmetic thing
-def browse_people():
-    print("Fetching and rendering people web page")
+@webapp.route('/browse_animals')
+def browse_animals():
+    print("Fetching and rendering animals web page")
     db_connection = connect_to_database()
-    query = "SELECT fname, lname, homeworld, age, id from bsg_people;"
+    query = "SELECT * from Animals;"
     result = execute_query(db_connection, query).fetchall()
     print(result)
-    return render_template('people_browse.html', rows=result)
+    return render_template('animal_browse.html', rows=result)
+
+@webapp.route('/browse_keepers')
+def browse_keepers():
+    print("Fetching and rendering keepers web page")
+    db_connection = connect_to_database()
+    query = "SELECT * from Keepers;"
+    result = execute_query(db_connection, query).fetchall()
+    print(result)
+    return render_template('keeper_browse.html', rows=result)
+
+@webapp.route('/browse_schedule')
+def browse_schedule():
+    print("Fetching and rendering schedule web page")
+    db_connection = connect_to_database()
+    query = "SELECT * from `Feeding Times`;"
+    result = execute_query(db_connection, query).fetchall()
+    print(result)
+    return render_template('schedule_browse.html', rows=result)
+
+@webapp.route('/browse_diets')
+def browse_diets():
+    print("Fetching and rendering diets web page")
+    db_connection = connect_to_database()
+    query = "SELECT * from Diets;"
+    result = execute_query(db_connection, query).fetchall()
+    print(result)
+    return render_template('diet_browse.html', rows=result)
+
+@webapp.route('/browse_instructions')
+def browse_instructions():
+    print("Fetching and rendering instructions web page")
+    db_connection = connect_to_database()
+    query = "SELECT * from `Special Care Instructions`;"
+    result = execute_query(db_connection, query).fetchall()
+    print(result)
+    return render_template('instruction_browse.html', rows=result)
 
 @webapp.route('/add_new_people', methods=['POST','GET'])
 def add_new_people():
@@ -43,7 +78,7 @@ def add_new_people():
 
 @webapp.route('/')
 def index():
-    return "<p>Are you looking for /db_test or /hello or <a href='/browse_bsg_people'>/browse_bsg_people</a> or /add_new_people or /update_people/id or /delete_people/id </p>"
+    return render_template("index.html")
 
 @webapp.route('/home')
 def home():

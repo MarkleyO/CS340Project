@@ -1,0 +1,23 @@
+<html>
+<head><title>Browse Feeding Times</title></head>
+
+<h3>Current Feeding Times</h3>
+<table border='1'>
+    <thead>
+        <th>Feeding Time ID</th>
+        <th>Diet</th>
+        <th>Time</th>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td> {{ r.0 }}</td>
+        <td> {{ r[1] }}</td>
+        <td> {{ r[2] }}</td>
+        <td> <input type='button' name='Update' value='Update' onclick="window.location = '/update_people/{{r[4]}}'"> </td>
+        <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_people/{{r[4]}}'"> </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+</html>

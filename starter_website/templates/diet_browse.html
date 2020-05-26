@@ -1,0 +1,21 @@
+<html>
+<head><title>Browse Diets</title></head>
+
+<h3>Current Diets</h3>
+<table border='1'>
+    <thead>
+        <th>Diet</th>
+        <th>Foods</th>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td> {{ r.0 }}</td>
+        <td> {{ r[1] }}</td>
+        <td> <input type='button' name='Update' value='Update' onclick="window.location = '/update_people/{{r[4]}}'"> </td>
+        <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_people/{{r[4]}}'"> </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+</html>

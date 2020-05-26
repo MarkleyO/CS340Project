@@ -1,0 +1,31 @@
+<html>
+<head><title>Browse Animals</title></head>
+
+<h3>Current Animals</h3>
+<table border='1'>
+    <thead>
+        <th>Animal ID</th>
+        <th>Name</th>
+        <th>Species</th>
+        <th>Age</th>
+        <th>Habitat</th>
+        <th>Injury</th>
+        <th>Feeding ID</th>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td> {{ r.0 }}</td>
+        <td> {{ r[1] }}</td>
+        <td> {{ r[2] }}</td>
+        <td> {{ r[3] }}</td>
+        <td> {{ r[4] }}</td>
+        <td> {{ r[5] }}</td>
+        <td> {{ r[6] }}</td>
+        <td> <input type='button' name='Update' value='Update' onclick="window.location = '/update_people/{{r[4]}}'"> </td>
+        <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_people/{{r[4]}}'"> </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+</html>
