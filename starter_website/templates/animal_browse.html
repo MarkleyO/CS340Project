@@ -27,21 +27,19 @@
   <div class="container centered">
     <h1 class="text-center" style="margin-top: 5%;">Animals</h1>
 
-    <div class="form-group">
-      <label class="form-label" for="input-example-1"></label>
-      <input class="form-input" type="text" id="input-example-1" placeholder="Search">
-    </div>
-
-    <div class="btn-group btn-group-block">
+    <form method="POST">
+      <input name="text" class="form-input" type="text" id="input-example-1" placeholder="Search">
       <h5 class="text-center" style="margin-right: 1%; margin-top: .5%;">Search By:</h1>
-      <button class="btn">ID</button>
-      <button class="btn">Name</button>
-      <button class="btn">Species</button>
-      <button class="btn">Habitat</button>
-      <button class="btn">Keeper</button>
-      <button class="btn">Feeding Time</button>
-      <button class="btn">Injury</button>
-    </div>
+      <div class="btn-group btn-group-block">
+        <button type="submit" class="btn" name="submit_button" value="Animal ID">ID</button>
+        <button type="submit" class="btn" name="submit_button" value="Name">Name</button>
+        <button type="submit" class="btn" name="submit_button" value="Species">Species</button>
+        <button type="submit" class="btn" name="submit_button" value="Habitat">Habitat</button>
+        <button type="submit" class="btn" name="submit_button" value="Keeper">Keeper</button>
+        <button type="submit" class="btn" name="submit_button" value="Feeding Time">Feeding Time</button>
+        <button type="submit" class="btn" name="submit_button" value="Injury">Injury</button>
+      </div>
+    </form>
 
     <table class="table">
       <thead>

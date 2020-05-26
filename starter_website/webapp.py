@@ -55,6 +55,25 @@ def browse_instructions():
     print(result)
     return render_template('instruction_browse.html', rows=result)
 
+@webapp.route('/browse_animals', methods=['POST'])
+def search_ID():
+    db_connection = connect_to_database()
+    text = request.form['text']
+    value = request.form['submit_button']
+    if text == "":
+        query = "SELECT * from Animals;"
+        result = execute_query(db_connection, query).fetchall()
+        return render_template('animal_browse.html', rows=result)
+
+    query = "SELECT * FROM Animals WHERE `" + value + "` = %s"
+    data = (text,)
+    result = execute_query(db_connection, query, data)
+
+    print(value)
+    print(text)
+    return render_template('animal_browse.html', rows=result)
+
+
 @webapp.route('/add_new_people', methods=['POST','GET'])
 def add_new_people():
     db_connection = connect_to_database()
