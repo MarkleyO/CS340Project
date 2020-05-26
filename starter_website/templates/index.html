@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="spectre.css">
+  <link rel="stylesheet" href="{{ url_for('static',filename='spectre.css') }}">
 
   <title>ZooDB</title>
   <style>header{background-color: #acb3bf}</style>
@@ -12,14 +12,14 @@
 <body>
   <header class="navbar">
     <section class="navbar-section">
-      <a href="index.html" class="navbar-brand mr-2">Home</a>
+      <a href="/" class="navbar-brand mr-2">Home</a>
     </section>
     <section class="navbar-center">
-      <a href="subpages\animals.html" class="btn btn-link">Animals</a>
-      <a href="subpages\zookeepers.html" class="btn btn-link">Zookeepers</a>
-      <a href="subpages\feeding_schedule.html" class="btn btn-link">Feeding Schedule</a>
-      <a href="subpages\diets.html" class="btn btn-link">Diets</a>
-      <a href="subpages\care_instructions.html" class="btn btn-link">Care Instructions</a>
+      <a href="/browse_animals" class="btn btn-link">Animals</a>
+      <a href="/browse_keepers" class="btn btn-link">Zookeepers</a>
+      <a href="/browse_schedule" class="btn btn-link">Feeding Schedule</a>
+      <a href="/browse_diets" class="btn btn-link">Diets</a>
+      <a href="/browse_instructions" class="btn btn-link">Care Instructions</a>
     </section>
     <section class="navbar-section"></section>
   </header>
@@ -29,7 +29,7 @@
       <div class="bg-secondary text-primary docs-block">
         <h1>Welcome to the Zoo!</h1>
       </div>
-      <img src="photo-of-tiger.jpg" class="img-responsive">
+      <img src="{{url_for('static', filename='photo-of-tiger.jpg')}}" class="img-responsive">
     </div>
 
   </div>

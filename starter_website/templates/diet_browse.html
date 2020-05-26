@@ -1,21 +1,50 @@
-<html>
-<head><title>Browse Diets</title></head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static',filename='spectre.css') }}">
 
-<h3>Current Diets</h3>
-<table border='1'>
-    <thead>
-        <th>Diet</th>
-        <th>Foods</th>
-    </thead>
-    <tbody>
-      {% for r in rows %}
-      <tr>
-        <td> {{ r.0 }}</td>
-        <td> {{ r[1] }}</td>
-        <td> <input type='button' name='Update' value='Update' onclick="window.location = '/update_people/{{r[4]}}'"> </td>
-        <td> <input type='button' name='Delete' value='Delete' onclick="window.location = '/delete_people/{{r[4]}}'"> </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-</table>
-</html>
+  <title>ZooDB - Diets</title>
+  <style>header{background-color: #acb3bf}</style>
+</head>
+
+<body>
+  <header class="navbar">
+    <section class="navbar-section">
+      <a href="/" class="navbar-brand mr-2">Home</a>
+    </section>
+    <section class="navbar-center">
+      <a href="/browse_animals" class="btn btn-link">Animals</a>
+      <a href="/browse_keepers" class="btn btn-link">Zookeepers</a>
+      <a href="/browse_schedule" class="btn btn-link">Feeding Schedule</a>
+      <a href="/browse_diets" class="btn btn-link">Diets</a>
+      <a href="/browse_instructions" class="btn btn-link">Care Instructions</a>
+    </section>
+    <section class="navbar-section"></section>
+  </header>
+
+  <div class="container centered">
+    <h1 class="text-center" style="margin-top: 5%;">Diets</h1>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Diet</th>
+          <th>Food</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+        <tr class="active">
+          <td> {{ r.0 }}</td>
+          <td> {{ r[1] }}</td>
+          <td><button class="btn">Update</button></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</body>
