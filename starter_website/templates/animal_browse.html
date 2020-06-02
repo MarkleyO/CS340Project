@@ -65,8 +65,10 @@
           <td> {{ r[5] }}</td>
           <td> {{ r[6] }}</td>
           <td>
-            <button class="btn">Update</button>
-            <button class="btn btn-error">Remove</button>
+            <form method="POST">
+              <button value="/rows/{{ r[6] }}" type="submit" class="btn">Update</button>
+              <button class="btn btn-error">Remove</button>
+            </form>
           </td>
         </tr>
         {% endfor %}
@@ -74,7 +76,7 @@
     </table>
 
     <div style="margin: 1%;">
-      <a href="add_animal.html">
+      <a href="/add_animal">
         <button class="btn btn-primary">Add Animal</button>
       </a>
     </div>

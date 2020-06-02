@@ -73,6 +73,30 @@ def search_ID():
     print(text)
     return render_template('animal_browse.html', rows=result)
 
+@webapp.route('/add_animal')
+def prompt_add_animal():
+    return render_template("add_animal.html")
+
+@webapp.route('/add_animal', methods=['POST'])
+def add_animal():
+    db_connection = connect_to_database()
+    animal_id = request.form['animal-input']
+    name = request.form['name-input']
+    species = request.form['species-input']
+    age = request.form['age-input']
+    habitat = request.form['habitat-input']
+    feeding = request.form['feeding-input']
+    injury = request.form['injury-input']
+
+    data = (animal_id, name, species, age, habitat, injury, feeding)
+    print(data)
+    query = "INSERT INTO `Animals` (`Animal ID`, `Name`, `Species`, `Age`, `Habitat`, `Injury`, `Feeding ID`) VALUES (%s,%s,%s,%s,%s,%s,%s);"
+    execute_query(db_connection, query, data)
+
+    query = "SELECT * from Animals;"
+    result = execute_query(db_connection, query).fetchall()
+    return render_template('animal_browse.html', rows=result)
+
 
 @webapp.route('/add_new_people', methods=['POST','GET'])
 def add_new_people():
