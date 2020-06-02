@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static',filename='spectre.css') }}">
+
+  <title>ZooDB</title>
+  <style>header{background-color: #acb3bf}</style>
+</head>
+
+<body>
+  <form method="POST">
+    <div class="container centered">
+      <h1>Animal</h1>
+        <div class="form-group">
+          <label class="form-label" for="input-example-1">Animal ID</label>
+          <input name="animal-input" class="form-input" type="text" id="input-example-1" placeholder="Animal ID">
+          <label class="form-label" for="input-example-1">Name</label>
+          <input name="name-input" class="form-input" type="text" id="input-example-1" placeholder="Name">
+          <label class="form-label" for="input-example-1">Species</label>
+          <input name="species-input" class="form-input" type="text" id="input-example-1" placeholder="Species">
+          <label class="form-label" for="input-example-1">Age</label>
+          <input name="age-input" class="form-input" type="text" id="input-example-1" placeholder="Age">
+          <label class="form-label" for="input-example-1">Habitat</label>
+          <input name="habitat-input" class="form-input" type="text" id="input-example-1" placeholder="Habitat">
+          <label class="form-label" for="input-example-1">Feeding Time</label>
+          <input name="feeding-input" class="form-input" type="text" id="input-example-1" placeholder="Feeding Time">
+          <label class="form-label" for="input-example-1">Injury</label>
+          <input name="injury-input" class="form-input" type="text" id="input-example-1" placeholder="Injury">
+        </div>
+      <a href="animals.html">
+        <button type="submit" class="btn btn-primary" name="submit_button" value="Animal">Done</button>
+      </a>
+    </div>
+  </form>
+</body>
