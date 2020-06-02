@@ -97,6 +97,16 @@ def add_animal():
     result = execute_query(db_connection, query).fetchall()
     return render_template('animal_browse.html', rows=result)
 
+@webapp.route('/delete_animal/<int:id>')
+def delete_animal(id):
+    '''deletes a person with the given id'''
+    db_connection = connect_to_database()
+    query = "DELETE FROM `Animals` WHERE `Animal ID` = %s"
+    data = (id,)
+
+    result = execute_query(db_connection, query, data)
+    return (str(result.rowcount) + "row deleted")
+
 
 @webapp.route('/add_new_people', methods=['POST','GET'])
 def add_new_people():

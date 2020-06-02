@@ -65,10 +65,8 @@
           <td> {{ r[5] }}</td>
           <td> {{ r[6] }}</td>
           <td>
-            <form method="POST">
               <button value="/rows/{{ r[6] }}" type="submit" class="btn">Update</button>
-              <button class="btn btn-error">Remove</button>
-            </form>
+              <button type="Remove" class="btn btn-error" name="remove-button" value={{r.0}} onclick="window.location='/delete_animal/{{r.0}}'">Remove</button>
           </td>
         </tr>
         {% endfor %}
