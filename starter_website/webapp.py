@@ -97,16 +97,16 @@ def add_animal():
     result = execute_query(db_connection, query).fetchall()
     return render_template('animal_browse.html', rows=result)
 
-#@webapp.route('/delete_animal/<int:id>')
-#def delete_animal(id):
-#    '''deletes a person with the given id'''
-#    db_connection = connect_to_database()
-#    query = "DELETE FROM `Animals` WHERE `Animal ID` = %s"
-#    data = (id,)
+@webapp.route('/delete_animal/<int:id>')
+def delete_animal(id):
+    '''deletes a person with the given id'''
+    db_connection = connect_to_database()
+    query = "DELETE FROM `Animals` WHERE `Animal ID` = %s"
+    data = (id,)
 
-#    result = execute_query(db_connection, query, data)
-#    return (str(result.rowcount) + "row deleted")
-
+    result = execute_query(db_connection, query, data)
+    return (str(result.rowcount) + "row deleted")
+    return redirect('/browse_animals')
 #display update form and process any updates, using the same function
 @webapp.route('/animal_update/<int:id>', methods=['POST','GET'])
 def update_animal(id):
