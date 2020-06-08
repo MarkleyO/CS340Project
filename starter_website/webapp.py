@@ -97,16 +97,58 @@ def add_animal():
     result = execute_query(db_connection, query).fetchall()
     return render_template('animal_browse.html', rows=result)
 
-@webapp.route('/delete_animal/<int:id>')
-def delete_animal(id):
-    '''deletes a person with the given id'''
+#@webapp.route('/delete_animal/<int:id>')
+#def delete_animal(id):
+#    '''deletes a person with the given id'''
+#    db_connection = connect_to_database()
+#    query = "DELETE FROM `Animals` WHERE `Animal ID` = %s"
+#    data = (id,)
+
+#    result = execute_query(db_connection, query, data)
+#    return (str(result.rowcount) + "row deleted")
+
+#display update form and process any updates, using the same function
+@webapp.route('/animal_update/<int:id>', methods=['POST','GET'])
+def update_animal(id):
+    print('In the function')
     db_connection = connect_to_database()
-    query = "DELETE FROM `Animals` WHERE `Animal ID` = %s"
-    data = (id,)
+    #display existing data
+    if request.method == 'GET':
+        print('The GET request')
+        animal_query = 'SELECT `Animal ID`, `Name`, `Species`, `Age`, `Habitat`, `Injury`, `Feeding ID`  from Animals WHERE `Animal ID`= %s'  % (id)
+        animal_result = execute_query(db_connection, animal_query).fetchone()
+        print("here")
 
-    result = execute_query(db_connection, query, data)
-    return (str(result.rowcount) + "row deleted")
+        if animal_result == None:
+            return "No such person found!"
 
+        injury_query = 'SELECT `Injury` from `Special Care Instructions`'
+        injury_result = execute_query(db_connection, injury_query).fetchall()
+
+        feeding_query = 'SELECT `Feeding Time ID` from `Feeding Times`'
+        feeding_result = execute_query(db_connection, feeding_query).fetchall()
+
+        print('Returning')
+        return render_template('animal_update.html', rows = animal_result, injury = injury_result, feeding= feeding_result)
+
+    elif request.method == 'POST':
+        print('The POST request')
+        animal_id = request.form['animal-input']
+        name = request.form['name-input']
+        species = request.form['species-input']
+        age = request.form['age-input']
+        habitat = request.form['habitat-input']
+        injury = request.form['injury-input']
+        feeding = request.form['feeding-input']
+
+
+        query = "UPDATE `Animals` SET `Name` = %s, `Species` = %s, `Age` = %s, `Habitat` = %s, `Injury` =%s, `Feeding ID` =%s WHERE `Animal ID` = %s"
+        data = (name, species, age, habitat, injury, feeding, animal_id)
+
+        result = execute_query(db_connection, query, data)
+        print(str(result.rowcount) + " row(s) updated")
+
+        return redirect('/browse_animals')
 
 @webapp.route('/add_new_people', methods=['POST','GET'])
 def add_new_people():

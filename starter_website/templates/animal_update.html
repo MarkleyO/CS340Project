@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static',filename='spectre.css') }}">
+
+  <title>ZooDB</title>
+  <style>header{background-color: #acb3bf}</style>
+</head>
+
+<body>
+<form method="POST">
+<div class="container centered">
+  <h2>Update Animal</h2>
+  <div class="form-group">
+
+    <input name="animal-input" class="form-input" type="hidden" id="input-example-1" placeholder="Animal ID"  value = "{{ rows[0] }}">
+    <label class="form-label" for="input-example-1">Name</label>
+    <input name="name-input" class="form-input" type="text" id="input-example-1" placeholder="Name" value = "{{ rows[1] }}">
+    <label class="form-label" for="input-example-1">Species</label>
+    <input name="species-input" class="form-input" type="text" id="input-example-1" placeholder="Species" value = "{{ rows[2] }}">
+    <label class="form-label" for="input-example-1">Age</label>
+    <input name="age-input" class="form-input" type="text" id="input-example-1" placeholder="Age" value = "{{ rows[3] }}">
+    <label class="form-label" for="input-example-1">Habitat</label>
+    <input name="habitat-input" class="form-input" type="text" id="input-example-1" placeholder="Habitat" value = "{{ rows[4] }}">
+
+    <label class="form-label" for="input-example-1">Injury</label>
+    <select class="form-select" name= "injury-input" value = "{{ rows[5] }}">
+        <option value="{{rows[5]}}">{{rows[5]}}</option>
+        <option value="{{injury[0][0] }}">{{injury[0][0]}}</option>
+        <option value="{{injury[1][0] }}">{{injury[1][0]}}</option>
+        <option value="{{injury[2][0] }}">{{injury[2][0]}}</option>
+      </select>
+
+      <label class="form-label" for="input-example-1">Feeding ID</label>
+      <select class="form-select" name= "feeding-input" value = "{{ rows[6] }}">
+          <option value="{{rows[6]}}">{{rows[6]}}</option>
+          <option value="{{feeding[0][0] }}">{{feeding[0][0]}}</option>
+          <option value="{{feeding[1][0] }}">{{feeding[1][0]}}</option>
+          <option value="{{feeding[2][0] }}">{{feeding[2][0]}}</option>
+        </select>
+  </div>
+      <button type="submit" class="btn btn-primary" name="submit_button">Submit</button>
+</div>
+</form>
+
+</body>
