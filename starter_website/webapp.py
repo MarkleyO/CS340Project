@@ -182,15 +182,19 @@ def update_animal(id):
         injury = request.form['injury-input']
         feeding = request.form['feeding-input']
 
-        if injury == None:
-            query = "UPDATE `Animals` SET `Animals`.`Injury`=NULL WHERE  `Animals`.`Animal ID` = %s"
+        print(injury)
+        if injury == "":
+            print("inside if")
+            injury_query = "UPDATE `Animals` SET `Name` = %s, `Species` = %s, `Age` = %s, `Habitat` = %s,`Injury`=NULL,`Feeding ID` =%s WHERE `Animal ID` = %s"
+            data_1 = (name, species, age, habitat, feeding, animal_id)
+            injury_result = execute_query(db_connection, injury_query,data_1)
 
-        query = "UPDATE `Animals` SET `Name` = %s, `Species` = %s, `Age` = %s, `Habitat` = %s, `Injury` =%s, `Feeding ID` =%s WHERE `Animal ID` = %s"
-        data = (name, species, age, habitat, injury, feeding, animal_id)
+        else:
+            query = "UPDATE `Animals` SET `Name` = %s, `Species` = %s, `Age` = %s, `Habitat` = %s, `Injury` =%s, `Feeding ID` =%s WHERE `Animal ID` = %s"
+            data = (name, species, age, habitat, injury, feeding, animal_id)
+            result = execute_query(db_connection, query, data)
 
-        result = execute_query(db_connection, query, data)
-        print(str(result.rowcount) + " row(s) updated")
-
+            print(str(result.rowcount) + " row(s) updated")
         return redirect('/browse_animals')
 
 @webapp.route('/add_new_people', methods=['POST','GET'])
