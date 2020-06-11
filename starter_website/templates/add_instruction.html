@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static',filename='spectre.css') }}">
+
+  <title>ZooDB</title>
+  <style>header{background-color: #acb3bf}</style>
+</head>
+
+<body>
+  <form method="POST">
+    <div class="container centered">
+      <h1>Add Care Instructions</h1>
+      <div class="form-group">
+        <label class="form-label" for="input-example-1">Injury</label>
+        <input name="injury-input" class="form-input" type="text" id="input-example-1" placeholder="Injury">
+        <label class="form-label" for="input-example-1">Bandaging</label>
+        <input name="bandaging-input" class="form-input" type="text" id="input-example-1" placeholder="Bandaging">
+        <label class="form-label" for="input-example-1">Medicine</label>
+        <input name="medicine-input" class="form-input" type="text" id="input-example-1" placeholder="Medicine">
+      </div>
+      <button type="submit" class="btn btn-primary" name="submit_button">Submit</button>
+</body>

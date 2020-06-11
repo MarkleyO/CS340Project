@@ -75,6 +75,25 @@ def browse_instructions():
     print(result)
     return render_template('instruction_browse.html', rows=result)
 
+@webapp.route('/add_instruction')
+def prompt_add_instruction():
+    return render_template("add_instruction.html")
+
+@webapp.route('/add_instruction', methods=['POST'])
+def add_instruction():
+    db_connection = connect_to_database()
+    injury = request.form['injury-input']
+    bandaging = request.form['bandaging-input']
+    medicine = request.form['medicine-input']
+    data = (injury,bandaging,medicine)
+    print(data)
+    query = "INSERT INTO `Special Care Instructions` (`Injury`, `Bandaging`, `Medicine`) VALUES (%s,%s,%s);"
+    execute_query(db_connection, query, data)
+
+    query = "SELECT * from Special Care Instructions;"
+    result = execute_query(db_connection, query).fetchall()
+    return render_template('instruction_browse.html', rows=result)
+
 @webapp.route('/browse_animals', methods=['POST'])
 def search_ID():
     db_connection = connect_to_database()
