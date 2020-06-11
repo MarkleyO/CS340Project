@@ -151,15 +151,65 @@ def search_ID():
     if text == "":
         query = "SELECT * from Animals;"
         result = execute_query(db_connection, query).fetchall()
-        return render_template('animal_browse.html', rows=result)
 
-    query = "SELECT * FROM Animals WHERE `" + value + "` = %s"
+        unique_animal_ids = []
+        for row in result:
+            unique_animal_ids.append(row[0])
+
+        query2 = "SELECT `Animals`.`Animal ID`, Animals.Name, Animals.Species, Animals.Age, Animals.Habitat, Animals.Injury, `Animals`.`Feeding ID`, Keepers.Name FROM Animals JOIN AnimalsKeepers ON Animals.`Animal ID` = AnimalsKeepers.`Animal ID` JOIN Keepers ON `AnimalsKeepers`.`Keeper ID` = `Keepers`.`Keeper ID`"
+        result2 = execute_query(db_connection, query2).fetchall()
+        strings_to_append = []
+        for i in range(len(unique_animal_ids)):
+            temp_str = ""
+            temp_uid = unique_animal_ids[i]
+            for row in result2:
+                if row[0] == temp_uid:
+                    temp_str = temp_str + row[7] + " "
+            strings_to_append.append(temp_str)
+
+        appended_tuples = []
+        for i in range(len(result)):
+            appended_tuples.append(result[i] + (strings_to_append[i],))
+
+        starting_tuple = (appended_tuples[0],)
+        for i in range(1, len(appended_tuples)):
+            starting_tuple = starting_tuple + (appended_tuples[i],)
+        print(starting_tuple)
+
+        return render_template('animal_browse.html', rows=starting_tuple)
+
+    query = "SELECT * FROM Animals WHERE `Animals`.`" + value + "` = %s"
     data = (text,)
     result = execute_query(db_connection, query, data)
 
-    print(value)
-    print(text)
+    unique_animal_ids = []
+    for row in result:
+        unique_animal_ids.append(row[0])
+    print(unique_animal_ids)
+    #
+    # query2 = "SELECT `Animals`.`Animal ID`, Animals.Name, Animals.Species, Animals.Age, Animals.Habitat, Animals.Injury, `Animals`.`Feeding ID`, Keepers.Name FROM Animals JOIN AnimalsKeepers ON Animals.`Animal ID` = AnimalsKeepers.`Animal ID` JOIN Keepers ON `AnimalsKeepers`.`Keeper ID` = `Keepers`.`Keeper ID` WHERE `" + value + "` = %s"
+    # data = (text,)
+    # result2 = execute_query(db_connection, query2, data)
+    # strings_to_append = []
+    # for i in range(len(unique_animal_ids)):
+    #     temp_str = ""
+    #     temp_uid = unique_animal_ids[i]
+    #     for row in result2:
+    #         if row[0] == temp_uid:
+    #             temp_str = temp_str + row[7] + " "
+    #     strings_to_append.append(temp_str)
+    #
+    # appended_tuples = []
+    # for i in range(len(result)):
+    #     appended_tuples.append(result[i] + (strings_to_append[i],))
+    #
+    # starting_tuple = (appended_tuples[0],)
+    # for i in range(1, len(appended_tuples)):
+    #     starting_tuple = starting_tuple + (appended_tuples[i],)
+    # print(starting_tuple)
+
     return render_template('animal_browse.html', rows=result)
+
 
 @webapp.route('/add_animal')
 def prompt_add_animal():
