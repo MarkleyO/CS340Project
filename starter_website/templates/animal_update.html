@@ -27,7 +27,7 @@
 
     <label class="form-label" for="input-example-1">Injury</label>
     <select class="form-select" name= "injury-input" value = "{{ rows[5] }}">
-          <!--option value="{{NULL}}">{{NULL}}</option> -->
+        <option value="{{NULL}}">{{NULL}}</option>
         {% for rows in injury %}
           <option value="{{rows[0]}}">{{rows[0]}}</option>
         {% endfor %}

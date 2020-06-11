@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static',filename='spectre.css') }}">
+
+  <title>ZooDB</title>
+  <style>header{background-color: #acb3bf}</style>
+</head>
+
+<body>
+  <form method="POST">
+    <div class="container centered">
+      <h1>Add Diet</h1>
+      <div class="form-group">
+        <label class="form-label" for="input-example-1">Diet</label>
+        <input name="diet-input" class="form-input" type="text" id="input-example-1" placeholder="Diet">
+        <label class="form-label" for="input-example-1">Food</label>
+        <input name="food-input" class="form-input" type="text" id="input-example-1" placeholder="Food">
+      </div>
+      <button type="submit" class="btn btn-primary" name="submit_button">Submit</button>
+</body>

@@ -46,6 +46,26 @@ def browse_diets():
     print(result)
     return render_template('diet_browse.html', rows=result)
 
+@webapp.route('/add_diet')
+def prompt_add_diet():
+    return render_template("add_diet.html")
+
+@webapp.route('/add_diet', methods=['POST'])
+def add_diet():
+    db_connection = connect_to_database()
+    diet = request.form['diet-input']
+    food = request.form['food-input']
+
+    data = (diet,food)
+    print(data)
+    query = "INSERT INTO `Diets` (`Diet`, `Foods`) VALUES (%s,%s);"
+    execute_query(db_connection, query, data)
+
+    query = "SELECT * from Diets;"
+    result = execute_query(db_connection, query).fetchall()
+    return render_template('diet_browse.html', rows=result)
+
+
 @webapp.route('/browse_instructions')
 def browse_instructions():
     print("Fetching and rendering instructions web page")
@@ -144,7 +164,7 @@ def update_animal(id):
         feeding = request.form['feeding-input']
 
         if injury == None:
-            query = "UPDATE `Animals` SET `Injury`=NULL WHERE  `Animal ID` = %s"
+            query = "UPDATE `Animals` SET `Animals`.`Injury`=NULL WHERE  `Animals`.`Animal ID` = %s"
 
         query = "UPDATE `Animals` SET `Name` = %s, `Species` = %s, `Age` = %s, `Habitat` = %s, `Injury` =%s, `Feeding ID` =%s WHERE `Animal ID` = %s"
         data = (name, species, age, habitat, injury, feeding, animal_id)
