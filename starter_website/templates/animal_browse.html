@@ -51,6 +51,7 @@
           <th>Habitat</th>
           <th>Injury</th>
           <th>Feeding ID</th>
+          <th>Keepers</th>
           <th></th>
         </tr>
       </thead>
@@ -64,6 +65,7 @@
           <td> {{ r[4] }}</td>
           <td> {{ r[5] }}</td>
           <td> {{ r[6] }}</td>
+          <td> {{ r[7] }}</td>
           <td>
               <button type="submit" class="btn" value="/rows/{{r[7]}}" onclick="window.location='/animal_update/{{r.0}}'">Update</button>
               <button type="submit" class="btn btn-error" value="/rows/{{r[8]}}" onclick="window.location='/delete_animal/{{r.0}}'">Remove</button>

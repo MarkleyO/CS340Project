@@ -16,8 +16,32 @@ def browse_animals():
     db_connection = connect_to_database()
     query = "SELECT * from Animals;"
     result = execute_query(db_connection, query).fetchall()
-    print(result)
-    return render_template('animal_browse.html', rows=result)
+
+    unique_animal_ids = []
+    for row in result:
+        unique_animal_ids.append(row[0])
+
+    query2 = "SELECT `Animals`.`Animal ID`, Animals.Name, Animals.Species, Animals.Age, Animals.Habitat, Animals.Injury, `Animals`.`Feeding ID`, Keepers.Name FROM Animals JOIN AnimalsKeepers ON Animals.`Animal ID` = AnimalsKeepers.`Animal ID` JOIN Keepers ON `AnimalsKeepers`.`Keeper ID` = `Keepers`.`Keeper ID`"
+    result2 = execute_query(db_connection, query2).fetchall()
+    strings_to_append = []
+    for i in range(len(unique_animal_ids)):
+        temp_str = ""
+        temp_uid = unique_animal_ids[i]
+        for row in result2:
+            if row[0] == temp_uid:
+                temp_str = temp_str + row[7] + " "
+        strings_to_append.append(temp_str)
+
+    appended_tuples = []
+    for i in range(len(result)):
+        appended_tuples.append(result[i] + (strings_to_append[i],))
+
+    starting_tuple = (appended_tuples[0],)
+    for i in range(1, len(appended_tuples)):
+        starting_tuple = starting_tuple + (appended_tuples[i],)
+    print(starting_tuple)
+
+    return render_template('animal_browse.html', rows=starting_tuple)
 
 @webapp.route('/browse_keepers')
 def browse_keepers():
@@ -25,8 +49,33 @@ def browse_keepers():
     db_connection = connect_to_database()
     query = "SELECT * from Keepers;"
     result = execute_query(db_connection, query).fetchall()
-    print(result)
-    return render_template('keeper_browse.html', rows=result)
+
+    unique_keeper_ids = []
+    for row in result:
+        unique_keeper_ids.append(row[0])
+
+    query2 = "SELECT `Keepers`.`Keeper ID`, Keepers.Name, `Keepers`.`Job Title`, Animals.Name FROM Keepers JOIN AnimalsKeepers ON `Keepers`.`Keeper ID` = `AnimalsKeepers`.`Keeper ID` JOIN Animals ON `AnimalsKeepers`.`Animal ID` = `Animals`.`Animal ID`"
+    result2 = execute_query(db_connection, query2).fetchall()
+
+    strings_to_append = []
+    for i in range(len(unique_keeper_ids)):
+        temp_str = ""
+        temp_uid = unique_keeper_ids[i]
+        for row in result2:
+            if row[0] == temp_uid:
+                temp_str = temp_str + row[3] + " "
+        strings_to_append.append(temp_str)
+
+    appended_tuples = []
+    for i in range(len(result)):
+        appended_tuples.append(result[i] + (strings_to_append[i],))
+
+    starting_tuple = (appended_tuples[0],)
+    for i in range(1, len(appended_tuples)):
+        starting_tuple = starting_tuple + (appended_tuples[i],)
+    print(starting_tuple)
+
+    return render_template('keeper_browse.html', rows=starting_tuple)
 
 @webapp.route('/browse_schedule')
 def browse_schedule():
