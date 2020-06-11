@@ -27,18 +27,17 @@
 
     <label class="form-label" for="input-example-1">Injury</label>
     <select class="form-select" name= "injury-input" value = "{{ rows[5] }}">
-        <option value="{{rows[5]}}">{{rows[5]}}</option>
-        <option value="{{injury[0][0] }}">{{injury[0][0]}}</option>
-        <option value="{{injury[1][0] }}">{{injury[1][0]}}</option>
-        <option value="{{injury[2][0] }}">{{injury[2][0]}}</option>
+          <!--option value="{{NULL}}">{{NULL}}</option> -->
+        {% for rows in injury %}
+          <option value="{{rows[0]}}">{{rows[0]}}</option>
+        {% endfor %}
       </select>
 
       <label class="form-label" for="input-example-1">Feeding ID</label>
       <select class="form-select" name= "feeding-input" value = "{{ rows[6] }}">
-          <option value="{{rows[6]}}">{{rows[6]}}</option>
-          <option value="{{feeding[0][0] }}">{{feeding[0][0]}}</option>
-          <option value="{{feeding[1][0] }}">{{feeding[1][0]}}</option>
-          <option value="{{feeding[2][0] }}">{{feeding[2][0]}}</option>
+        {% for rows in feeding %}
+          <option value="{{rows[0]}}">{{rows[0]}}</option>
+        {% endfor %}
         </select>
   </div>
       <button type="submit" class="btn btn-primary" name="submit_button">Submit</button>

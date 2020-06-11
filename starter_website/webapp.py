@@ -124,8 +124,11 @@ def update_animal(id):
         injury_query = 'SELECT `Injury` from `Special Care Instructions`'
         injury_result = execute_query(db_connection, injury_query).fetchall()
 
+
         feeding_query = 'SELECT `Feeding Time ID` from `Feeding Times`'
         feeding_result = execute_query(db_connection, feeding_query).fetchall()
+
+
 
         print('Returning')
         return render_template('animal_update.html', rows = animal_result, injury = injury_result, feeding= feeding_result)
@@ -140,6 +143,8 @@ def update_animal(id):
         injury = request.form['injury-input']
         feeding = request.form['feeding-input']
 
+        if injury == None:
+            query = "UPDATE `Animals` SET `Injury`=NULL WHERE  `Animal ID` = %s"
 
         query = "UPDATE `Animals` SET `Name` = %s, `Species` = %s, `Age` = %s, `Habitat` = %s, `Injury` =%s, `Feeding ID` =%s WHERE `Animal ID` = %s"
         data = (name, species, age, habitat, injury, feeding, animal_id)
