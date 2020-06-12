@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static',filename='spectre.css') }}">
+
+  <title>ZooDB</title>
+  <style>header{background-color: #acb3bf}</style>
+</head>
+
+<body>
+  <form method="POST">
+    <div class="container centered">
+      <h1>Add Schedule</h1>
+      <div class="form-group">
+        <label class="form-label" for="input-example-1">Feeding Time ID</label>
+        <input name="feedingid-input" class="form-input" type="text" id="input-example-1" placeholder="Feeding Time ID">
+
+        <label class="form-label" for="input-example-1">Diet</label>
+        <select class="form-select" name= "diet-input" value = "">
+            {% for rows in diet %}
+              <option value="{{rows[0]}}">{{rows[0]}}</option>
+            {% endfor %}
+          </select>
+
+        <label class="form-label" for="input-example-1">Time</label>
+        <input name="time-input" class="form-input" type="text" id="input-example-1" placeholder="Time">
+      </div>
+      <button type="submit" class="btn btn-primary" name="submit_button">Submit</button>
+</body>

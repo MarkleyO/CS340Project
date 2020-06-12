@@ -77,6 +77,39 @@ def browse_keepers():
 
     return render_template('keeper_browse.html', rows=starting_tuple)
 
+
+@webapp.route('/add_keeper')
+def prompt_add_keeper():
+    db_connection = connect_to_database()
+    animal_name_query = 'SELECT Name from `Animals`'
+    animal_name_result = execute_query(db_connection, animal_name_query).fetchall()
+
+    return render_template("add_keeper.html", animals=animal_name_result)
+
+@webapp.route('/add_keeper', methods=['POST'])
+def add_keeper():
+    db_connection = connect_to_database()
+
+    request.method == 'POST'
+    keeper_id = request.form['keeperid-input']
+    name = request.form['name-input']
+    job = request.form['job-input']
+    animals = request.form['animals-input']
+
+    data = (keeper_id, name, job, animals)
+    print(data)
+    query = "INSERT INTO `Keepers` (`Keeper ID`, `Name`, `Job Title`) VALUES (%s,%s,%s);"
+    execute_query(db_connection, query, data)
+
+    query = "SELECT * from `Keepers`;"
+
+    result = execute_query(db_connection, query).fetchall()
+    print(result)
+    return render_template('keeper_browse.html', rows=result)
+
+
+
+
 @webapp.route('/browse_schedule')
 def browse_schedule():
     print("Fetching and rendering schedule web page")
@@ -94,6 +127,43 @@ def browse_diets():
     result = execute_query(db_connection, query).fetchall()
     print(result)
     return render_template('diet_browse.html', rows=result)
+
+
+
+
+
+
+
+@webapp.route('/add_schedule')
+def prompt_add_schedule():
+    db_connection = connect_to_database()
+    diets_query = 'SELECT Diet from `Diets`'
+    diets_result = execute_query(db_connection, diets_query).fetchall()
+
+    return render_template("add_schedule.html", diet=diets_result)
+
+@webapp.route('/add_schedule', methods=['POST'])
+def add_schedule():
+    db_connection = connect_to_database()
+    #if request.method == 'GET':
+
+    request.method == 'POST'
+    feeding_id = request.form['feedingid-input']
+    diet = request.form['diet-input']
+    time = request.form['time-input']
+
+    data = (feeding_id, diet, time)
+    print(data)
+    query = "INSERT INTO `Feeding Times` (`Feeding Time ID`, `Diet`, `Time`) VALUES (%s,%s,%s);"
+    execute_query(db_connection, query, data)
+
+    query = "SELECT * from `Feeding Times`;"
+
+    result = execute_query(db_connection, query).fetchall()
+    print(result)
+    return render_template('schedule_browse.html', rows=result)
+
+
 
 @webapp.route('/add_diet')
 def prompt_add_diet():
@@ -333,7 +403,7 @@ def home():
     query = "SELECT * from diagnostic;"
     result = execute_query(db_connection, query)
     for r in result:
-        print(f"{r[0]}, {r[1]}")
+        print("{r[0]}, {r[1]}")
     return render_template('home.html', result = result)
 
 @webapp.route('/db_test')
