@@ -10,6 +10,8 @@ webapp = Flask(__name__)
 def hello():
     return "Hello World!"
 
+# browses animals, loads all animals from database to page to viewtable
+# also fetches all connected keepers and displays as a column of strings
 @webapp.route('/browse_animals')
 def browse_animals():
     print("Fetching and rendering animals web page")
@@ -46,6 +48,7 @@ def browse_animals():
 
     return render_template('animal_browse.html', rows=starting_tuple)
 
+# functions identically to browse animals, yet operates on keepers
 @webapp.route('/browse_keepers')
 def browse_keepers():
     print("Fetching and rendering keepers web page")
@@ -83,6 +86,7 @@ def browse_keepers():
 
     return render_template('keeper_browse.html', rows=starting_tuple)
 
+# fetches all schedules from table and displays on basic webpage
 @webapp.route('/browse_schedule')
 def browse_schedule():
     print("Fetching and rendering schedule web page")
@@ -92,6 +96,7 @@ def browse_schedule():
     print(result)
     return render_template('schedule_browse.html', rows=result)
 
+# fetches all diets and displays on basic webpage
 @webapp.route('/browse_diets')
 def browse_diets():
     print("Fetching and rendering diets web page")
@@ -101,10 +106,12 @@ def browse_diets():
     print(result)
     return render_template('diet_browse.html', rows=result)
 
+# loads in form for user to fill in data about new diet
 @webapp.route('/add_diet')
 def prompt_add_diet():
     return render_template("add_diet.html")
 
+# 
 @webapp.route('/add_diet', methods=['POST'])
 def add_diet():
     db_connection = connect_to_database()

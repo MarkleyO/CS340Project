@@ -14,6 +14,7 @@
     <div class="container centered">
       <h1>Animal</h1>
         <div class="form-group">
+          <!-- Form fields to allow the user to enter data into -->
           <label class="form-label" for="input-example-1">Animal ID</label>
           <input name="animal-input" class="form-input" type="text" id="input-example-1" placeholder="Animal ID">
           <label class="form-label" for="input-example-1">Name</label>
@@ -25,7 +26,7 @@
           <label class="form-label" for="input-example-1">Habitat</label>
           <input name="habitat-input" class="form-input" type="text" id="input-example-1" placeholder="Habitat">
 
-
+          <!-- Drop down boxes populated only with valid data -->
           <label class="form-label" for="input-example-1">Feeding Time</label>
           <select class="form-select" name= "feed-input" value = "">
             {% for rows in times %}
