@@ -24,10 +24,22 @@
           <input name="age-input" class="form-input" type="text" id="input-example-1" placeholder="Age">
           <label class="form-label" for="input-example-1">Habitat</label>
           <input name="habitat-input" class="form-input" type="text" id="input-example-1" placeholder="Habitat">
+
+
           <label class="form-label" for="input-example-1">Feeding Time</label>
-          <input name="feeding-input" class="form-input" type="text" id="input-example-1" placeholder="Feeding Time">
+          <select class="form-select" name= "feed-input" value = "">
+            {% for rows in times %}
+              <option value="{{rows[0]}}">{{rows[0]}}</option>
+            {% endfor %}
+          </select>
+
           <label class="form-label" for="input-example-1">Injury</label>
-          <input name="injury-input" class="form-input" type="text" id="input-example-1" placeholder="Injury">
+          <select class="form-select" name= "injury-input" value = "">
+            <option value="{{NULL}}">{{NULL}}</option>
+            {% for rows in injury %}
+              <option value="{{rows[0]}}">{{rows[0]}}</option>
+            {% endfor %}
+          </select>
 
         </div>
       <a href="animals.html">

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ url_for('static',filename='spectre.css') }}">
+
+  <title>ZooDB</title>
+  <style>header{background-color: #acb3bf}</style>
+</head>
+
+<body>
+  <form method="POST">
+    <div class="container centered">
+      <h1>Animal Keeper Connection</h1>
+        <div class="form-group">
+
+          <label class="form-label" for="input-example-1">Animal</label>
+          <select class="form-select" name= "animal-input" value = "">
+              {% for rows in animal %}
+                <option value="{{rows[1]}}">{{rows[0]}}</option>
+              {% endfor %}
+            </select>
+
+          <label class="form-label" for="input-example-1">Keeper</label>
+          <select class="form-select" name= "keeper-input" value = "">
+            {% for rows in keeper %}
+              <option value="{{rows[1]}}">{{rows[0]}}</option>
+            {% endfor %}
+          </select>
+
+        </div>
+      <a href="animals.html">
+        <button type="submit" class="btn btn-primary" name="submit_button" value="Animal">Done</button>
+      </a>
+    </div>
+  </form>
+</body>

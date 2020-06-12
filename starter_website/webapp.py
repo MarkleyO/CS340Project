@@ -21,6 +21,9 @@ def browse_animals():
     for row in result:
         unique_animal_ids.append(row[0])
 
+    if len(unique_animal_ids) == 0:
+        return render_template('animal_browse.html', rows=result)
+
     query2 = "SELECT `Animals`.`Animal ID`, Animals.Name, Animals.Species, Animals.Age, Animals.Habitat, Animals.Injury, `Animals`.`Feeding ID`, Keepers.Name FROM Animals JOIN AnimalsKeepers ON Animals.`Animal ID` = AnimalsKeepers.`Animal ID` JOIN Keepers ON `AnimalsKeepers`.`Keeper ID` = `Keepers`.`Keeper ID`"
     result2 = execute_query(db_connection, query2).fetchall()
     strings_to_append = []
@@ -53,6 +56,9 @@ def browse_keepers():
     unique_keeper_ids = []
     for row in result:
         unique_keeper_ids.append(row[0])
+
+    if len(unique_keeper_ids) == 0:
+        return render_template('keeper_browse.html', rows=result)
 
     query2 = "SELECT `Keepers`.`Keeper ID`, Keepers.Name, `Keepers`.`Job Title`, Animals.Name FROM Keepers JOIN AnimalsKeepers ON `Keepers`.`Keeper ID` = `AnimalsKeepers`.`Keeper ID` JOIN Animals ON `AnimalsKeepers`.`Animal ID` = `Animals`.`Animal ID`"
     result2 = execute_query(db_connection, query2).fetchall()
@@ -139,7 +145,7 @@ def add_instruction():
     query = "INSERT INTO `Special Care Instructions` (`Injury`, `Bandaging`, `Medicine`) VALUES (%s,%s,%s);"
     execute_query(db_connection, query, data)
 
-    query = "SELECT * from Special Care Instructions;"
+    query = "SELECT * from `Special Care Instructions`;"
     result = execute_query(db_connection, query).fetchall()
     return render_template('instruction_browse.html', rows=result)
 
@@ -180,40 +186,50 @@ def search_ID():
 
     query = "SELECT * FROM Animals WHERE `Animals`.`" + value + "` = %s"
     data = (text,)
-    result = execute_query(db_connection, query, data)
+    result = execute_query(db_connection, query, data).fetchall()
+    print(result)
 
     unique_animal_ids = []
     for row in result:
         unique_animal_ids.append(row[0])
     print(unique_animal_ids)
-    #
-    # query2 = "SELECT `Animals`.`Animal ID`, Animals.Name, Animals.Species, Animals.Age, Animals.Habitat, Animals.Injury, `Animals`.`Feeding ID`, Keepers.Name FROM Animals JOIN AnimalsKeepers ON Animals.`Animal ID` = AnimalsKeepers.`Animal ID` JOIN Keepers ON `AnimalsKeepers`.`Keeper ID` = `Keepers`.`Keeper ID` WHERE `" + value + "` = %s"
-    # data = (text,)
-    # result2 = execute_query(db_connection, query2, data)
-    # strings_to_append = []
-    # for i in range(len(unique_animal_ids)):
-    #     temp_str = ""
-    #     temp_uid = unique_animal_ids[i]
-    #     for row in result2:
-    #         if row[0] == temp_uid:
-    #             temp_str = temp_str + row[7] + " "
-    #     strings_to_append.append(temp_str)
-    #
-    # appended_tuples = []
-    # for i in range(len(result)):
-    #     appended_tuples.append(result[i] + (strings_to_append[i],))
-    #
+
+    query2 = "SELECT `Animals`.`Animal ID`, Animals.Name, Animals.Species, Animals.Age, Animals.Habitat, Animals.Injury, `Animals`.`Feeding ID`, Keepers.Name FROM Animals JOIN AnimalsKeepers ON Animals.`Animal ID` = AnimalsKeepers.`Animal ID` JOIN Keepers ON `AnimalsKeepers`.`Keeper ID` = `Keepers`.`Keeper ID` WHERE Animals.`" + value + "` = %s"
+    data = (text,)
+    result2 = execute_query(db_connection, query2, data).fetchall()
+    print(result2)
+
+    strings_to_append = []
+    for i in range(len(unique_animal_ids)):
+        temp_str = ""
+        temp_uid = unique_animal_ids[i]
+        for row in result2:
+            if row[0] == temp_uid:
+                temp_str = temp_str + row[7] + " "
+        strings_to_append.append(temp_str)
+    print(strings_to_append)
+
+    appended_tuples = []
+    for i in range(len(result)):
+        appended_tuples.append(result[i] + (strings_to_append[i],))
+    print(appended_tuples)
     # starting_tuple = (appended_tuples[0],)
     # for i in range(1, len(appended_tuples)):
     #     starting_tuple = starting_tuple + (appended_tuples[i],)
     # print(starting_tuple)
 
-    return render_template('animal_browse.html', rows=result)
+    return render_template('animal_browse.html', rows=appended_tuples)
 
 
 @webapp.route('/add_animal')
 def prompt_add_animal():
-    return render_template("add_animal.html")
+    db_connection = connect_to_database()
+    times_query = "SELECT `Feeding Time ID` FROM `Feeding Times`;"
+    times_result = execute_query(db_connection, times_query).fetchall()
+    injury_query = "SELECT Injury FROM `Special Care Instructions`;"
+    injury_result = execute_query(db_connection, injury_query).fetchall()
+    print(times_result, injury_result)
+    return render_template("add_animal.html", times=times_result, injury=injury_result)
 
 @webapp.route('/add_animal', methods=['POST'])
 def add_animal():
@@ -223,17 +239,161 @@ def add_animal():
     species = request.form['species-input']
     age = request.form['age-input']
     habitat = request.form['habitat-input']
-    feeding = request.form['feeding-input']
+    feeding = request.form['feed-input']
     injury = request.form['injury-input']
 
-    data = (animal_id, name, species, age, habitat, injury, feeding)
+    if injury == "":
+        data = (animal_id, name, species, age, habitat, feeding)
+        print(data)
+        query = "INSERT INTO `Animals` (`Animal ID`, `Name`, `Species`, `Age`, `Habitat`, `Injury`, `Feeding ID`) VALUES (%s,%s,%s,%s,%s,NULL,%s);"
+        execute_query(db_connection, query, data)
+    else:
+        data = (animal_id, name, species, age, habitat, injury, feeding)
+        print(data)
+        query = "INSERT INTO `Animals` (`Animal ID`, `Name`, `Species`, `Age`, `Habitat`, `Injury`, `Feeding ID`) VALUES (%s,%s,%s,%s,%s,%s,%s);"
+        execute_query(db_connection, query, data)
+
+
+
+    # query = "SELECT * from Animals;"
+    # result = execute_query(db_connection, query).fetchall()
+    return redirect('/browse_animals') # render_template('animal_browse.html', rows=result)
+
+
+@webapp.route('/add_animal_keeper_connection')
+def prompt_add_animal_keeper_connection():
+    db_connection = connect_to_database()
+    animal_query = "SELECT Animals.Name, `Animals`.`Animal ID` FROM Animals"
+    keeper_query = "SELECT Keepers.Name, `Keepers`.`Keeper ID` FROM Keepers"
+    animal_result = execute_query(db_connection, animal_query).fetchall()
+    keeper_result = execute_query(db_connection, keeper_query).fetchall()
+    return render_template("add_connection.html", animal=animal_result, keeper=keeper_result)
+
+@webapp.route('/add_animal_keeper_connection', methods=['POST'])
+def add_animal_keeper_connection():
+    db_connection = connect_to_database()
+    animal = request.form['animal-input']
+    keeper = request.form['keeper-input']
+    data = (animal, keeper)
     print(data)
-    query = "INSERT INTO `Animals` (`Animal ID`, `Name`, `Species`, `Age`, `Habitat`, `Injury`, `Feeding ID`) VALUES (%s,%s,%s,%s,%s,%s,%s);"
+
+    query = "INSERT INTO `AnimalsKeepers` (`Animal ID`, `Keeper ID`) VALUES (%s,%s);"
     execute_query(db_connection, query, data)
 
     query = "SELECT * from Animals;"
     result = execute_query(db_connection, query).fetchall()
-    return render_template('animal_browse.html', rows=result)
+
+    unique_animal_ids = []
+    for row in result:
+        unique_animal_ids.append(row[0])
+
+    query2 = "SELECT `Animals`.`Animal ID`, Animals.Name, Animals.Species, Animals.Age, Animals.Habitat, Animals.Injury, `Animals`.`Feeding ID`, Keepers.Name FROM Animals JOIN AnimalsKeepers ON Animals.`Animal ID` = AnimalsKeepers.`Animal ID` JOIN Keepers ON `AnimalsKeepers`.`Keeper ID` = `Keepers`.`Keeper ID`"
+    result2 = execute_query(db_connection, query2).fetchall()
+    strings_to_append = []
+    for i in range(len(unique_animal_ids)):
+        temp_str = ""
+        temp_uid = unique_animal_ids[i]
+        for row in result2:
+            if row[0] == temp_uid:
+                temp_str = temp_str + row[7] + " "
+        strings_to_append.append(temp_str)
+
+    appended_tuples = []
+    for i in range(len(result)):
+        appended_tuples.append(result[i] + (strings_to_append[i],))
+
+    starting_tuple = (appended_tuples[0],)
+    for i in range(1, len(appended_tuples)):
+        starting_tuple = starting_tuple + (appended_tuples[i],)
+    print(starting_tuple)
+
+    return render_template('animal_browse.html', rows=starting_tuple)
+
+
+@webapp.route('/add_schedule')
+def prompt_add_schedule():
+    db_connection = connect_to_database()
+    diets_query = 'SELECT Diet from `Diets`'
+    diets_result = execute_query(db_connection, diets_query).fetchall()
+
+    return render_template("add_schedule.html", diet=diets_result)
+
+@webapp.route('/add_schedule', methods=['POST'])
+def add_schedule():
+    db_connection = connect_to_database()
+    #if request.method == 'GET':
+
+    request.method == 'POST'
+    feeding_id = request.form['feedingid-input']
+    diet = request.form['diet-input']
+    time = request.form['time-input']
+
+    data = (feeding_id, diet, time)
+    print(data)
+    query = "INSERT INTO `Feeding Times` (`Feeding Time ID`, `Diet`, `Time`) VALUES (%s,%s,%s);"
+    execute_query(db_connection, query, data)
+
+    query = "SELECT * from `Feeding Times`;"
+
+    result = execute_query(db_connection, query).fetchall()
+    print(result)
+    return render_template('schedule_browse.html', rows=result)
+
+
+@webapp.route('/add_keeper')
+def prompt_add_keeper():
+    return render_template("add_keeper.html")
+
+
+@webapp.route('/add_keeper', methods=['POST'])
+def add_keeper():
+    db_connection = connect_to_database()
+    #if request.method == 'GET':
+
+    request.method == 'POST'
+    keeper_id = request.form['keeperid-input']
+    name = request.form['name-input']
+    job = request.form['job-input']
+
+    data = (keeper_id, name, job)
+    print(data)
+    query = "INSERT INTO `Keepers` (`Keeper ID`, `Name`, `Job Title`) VALUES (%s,%s,%s);"
+    execute_query(db_connection, query, data)
+
+    query = "SELECT * from Keepers;"
+    result = execute_query(db_connection, query).fetchall()
+
+    unique_keeper_ids = []
+    for row in result:
+        unique_keeper_ids.append(row[0])
+
+    if len(unique_keeper_ids) == 0:
+        return render_template('keeper_browse.html', rows=result)
+
+    query2 = "SELECT `Keepers`.`Keeper ID`, Keepers.Name, `Keepers`.`Job Title`, Animals.Name FROM Keepers JOIN AnimalsKeepers ON `Keepers`.`Keeper ID` = `AnimalsKeepers`.`Keeper ID` JOIN Animals ON `AnimalsKeepers`.`Animal ID` = `Animals`.`Animal ID`"
+    result2 = execute_query(db_connection, query2).fetchall()
+
+    strings_to_append = []
+    for i in range(len(unique_keeper_ids)):
+        temp_str = ""
+        temp_uid = unique_keeper_ids[i]
+        for row in result2:
+            if row[0] == temp_uid:
+                temp_str = temp_str + row[3] + " "
+        strings_to_append.append(temp_str)
+
+    appended_tuples = []
+    for i in range(len(result)):
+        appended_tuples.append(result[i] + (strings_to_append[i],))
+
+    starting_tuple = (appended_tuples[0],)
+    for i in range(1, len(appended_tuples)):
+        starting_tuple = starting_tuple + (appended_tuples[i],)
+    print(starting_tuple)
+
+    return render_template('keeper_browse.html', rows=starting_tuple)
+    return render_template('keeper_browse.html', rows=result)
+
 
 @webapp.route('/delete_animal/<int:id>')
 def delete_animal(id):
@@ -296,94 +456,7 @@ def update_animal(id):
             print(str(result.rowcount) + " row(s) updated")
         return redirect('/browse_animals')
 
-@webapp.route('/add_new_people', methods=['POST','GET'])
-def add_new_people():
-    db_connection = connect_to_database()
-    if request.method == 'GET':
-        query = 'SELECT id, name from bsg_planets'
-        result = execute_query(db_connection, query).fetchall()
-        print(result)
-
-        return render_template('people_add_new.html', planets = result)
-    elif request.method == 'POST':
-        print("Add new people!")
-        fname = request.form['fname']
-        lname = request.form['lname']
-        age = request.form['age']
-        homeworld = request.form['homeworld']
-
-        query = 'INSERT INTO bsg_people (fname, lname, age, homeworld) VALUES (%s,%s,%s,%s)'
-        data = (fname, lname, age, homeworld)
-        execute_query(db_connection, query, data)
-        return ('Person added!')
 
 @webapp.route('/')
 def index():
     return render_template("index.html")
-
-@webapp.route('/home')
-def home():
-    db_connection = connect_to_database()
-    query = "DROP TABLE IF EXISTS diagnostic;"
-    execute_query(db_connection, query)
-    query = "CREATE TABLE diagnostic(id INT PRIMARY KEY, text VARCHAR(255) NOT NULL);"
-    execute_query(db_connection, query)
-    query = "INSERT INTO diagnostic (text) VALUES ('MySQL is working');"
-    execute_query(db_connection, query)
-    query = "SELECT * from diagnostic;"
-    result = execute_query(db_connection, query)
-    for r in result:
-        print(f"{r[0]}, {r[1]}")
-    return render_template('home.html', result = result)
-
-@webapp.route('/db_test')
-def test_database_connection():
-    print("Executing a sample query on the database using the credentials from db_credentials.py")
-    db_connection = connect_to_database()
-    query = "SELECT * from bsg_people;"
-    result = execute_query(db_connection, query)
-    return render_template('db_test.html', rows=result)
-
-#display update form and process any updates, using the same function
-@webapp.route('/update_people/<int:id>', methods=['POST','GET'])
-def update_people(id):
-    print('In the function')
-    db_connection = connect_to_database()
-    #display existing data
-    if request.method == 'GET':
-        print('The GET request')
-        people_query = 'SELECT id, fname, lname, homeworld, age from bsg_people WHERE id = %s'  % (id)
-        people_result = execute_query(db_connection, people_query).fetchone()
-
-        if people_result == None:
-            return "No such person found!"
-
-        planets_query = 'SELECT id, name from bsg_planets'
-        planets_results = execute_query(db_connection, planets_query).fetchall()
-
-        print('Returning')
-        return render_template('people_update.html', planets = planets_results, person = people_result)
-    elif request.method == 'POST':
-        print('The POST request')
-        character_id = request.form['character_id']
-        fname = request.form['fname']
-        lname = request.form['lname']
-        age = request.form['age']
-        homeworld = request.form['homeworld']
-
-        query = "UPDATE bsg_people SET fname = %s, lname = %s, age = %s, homeworld = %s WHERE id = %s"
-        data = (fname, lname, age, homeworld, character_id)
-        result = execute_query(db_connection, query, data)
-        print(str(result.rowcount) + " row(s) updated")
-
-        return redirect('/browse_bsg_people')
-
-@webapp.route('/delete_people/<int:id>')
-def delete_people(id):
-    '''deletes a person with the given id'''
-    db_connection = connect_to_database()
-    query = "DELETE FROM bsg_people WHERE id = %s"
-    data = (id,)
-
-    result = execute_query(db_connection, query, data)
-    return (str(result.rowcount) + "row deleted")
